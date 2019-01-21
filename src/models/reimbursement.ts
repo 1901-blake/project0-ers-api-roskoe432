@@ -3,23 +3,25 @@
 //  an employee would submit
 
 export class Reimbursement {
-    private static count: number = 0;
-
-    private _reimbursementId: number; // primary key
-    public author: number; // foreign key -> User, not null
-    public amount: number; // not null
-    public dateSubmitted: number; // not null
-    public dateResolved: number; // not null
-    public description: string; // not null
-    public resolver: number; // foreign key -> User
-    public status: number; // foreign key -> ReimbursementStatus, not null
-    public type: number; // foreign key -> ReimbursementType
+    reimbursementId: number; // primary key
+    author: number; // foreign key -> User, not null
+    amount: number; // not null
+    dateSubmitted: number; // not null
+    dateResolved: number; // not null
+    description: string; // not null
+    resolver: number; // foreign key -> User
+    status: number; // foreign key -> ReimbursementStatus, not null
+    type: number; // foreign key -> ReimbursementType
    
-    constructor() {
-        this._reimbursementId = Reimbursement.count;
-        
-
-        Reimbursement.count++;
-        console.log(this._reimbursementId);
+    constructor(id: number, author: number, amount: number, dateSubmitted: number, dateResolved: number, description: string, resolver: number, status: number, type: number) {
+        this.reimbursementId = id;
+        this.author = author;
+        this.amount = amount;
+        this.dateSubmitted = dateSubmitted;
+        this.dateResolved = dateResolved;
+        this.description = description;
+        this.resolver = resolver;
+        this.status = status;
+        this.type = type;
     }
 }
