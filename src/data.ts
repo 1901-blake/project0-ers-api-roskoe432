@@ -1,12 +1,31 @@
 import { User } from './models/user';
 import { Role } from './models/role';
-import { Reimbursement } from './models/reimbursement';
+import { ReimbursementStatus } from './models/reimbursement-status';
+import { ReimbursementType } from './models/reimbursement-type';
 
+const status = {
+  pending: new ReimbursementStatus(0, "pending"),
+  approved: new ReimbursementStatus(1, "approved"),
+  denied: new ReimbursementStatus(2, "denied")
+};
 
+const type = {
+  lodging: new ReimbursementType(0, 'lodging'),
+  travel: new ReimbursementType(1, 'travel'),
+  food: new ReimbursementType(2, 'food'),
+  other: new ReimbursementType(3, 'other'),
+};
 
-const larry = new User(0, 'Larry', 'larry@gmail.com', 'pw', 'Larry', 'Fine', void 0);
-const curly = new User(0, 'Curly', 'curly@gmail.com', 'pw', 'Curly', 'Howard', void 0);
-const moe = new User(0, 'Moe', 'moe@gmail.com', 'pw', 'Moe', 'Howard', void 0);
+const role = {
+  admin: new Role(0, 'admin'),
+  financeManager: new Role(1, 'finance manager'),
+  employee: new Role(2, 'employee')
+};
+
+// const admin = new User(0, 'Admin', )
+const larry = new User(3, 'Larry', 'larry@gmail.com', 'pw', 'Larry', 'Fine', role.employee);
+const curly = new User(4, 'Curly', 'curly@gmail.com', 'pw', 'Curly', 'Howard', role.employee);
+const moe = new User(5, 'Moe', 'moe@gmail.com', 'pw', 'Moe', 'Howard', role.employee);
 
 /* 
 const slash = new PokemonMove(1, 'slash', 'normal', 25, 10);
