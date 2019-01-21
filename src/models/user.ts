@@ -1,3 +1,6 @@
+// The User model keeps track of 
+// users information.
+
 export class User {
     private static count: number = 0;
 

@@ -1,3 +1,5 @@
+// The Role model is used to track
+//  what permissions a user has.
 export class Role {
     private static count: number = 0;
     
