@@ -41,16 +41,19 @@ export let DB = (function(){
       return user.role === role;
     });
   };
-  DB.selectUserById = function(id) {
-    return users.filter(user => {
-      return user.userId === id;
-    })[0];
-  }
+  DB.selectUserById = function(id: number, func: any) {
+    let user = users.find(user => {
+      return (user.userId === id);
+    });
+    if(user) { func(user); }
+  };
 
   return DB;
 })();
 
-console.log(DB.selectUserById(2));
+DB.selectUserById(0, user => {
+  console.log(user.getFullName);
+});
 
 /* 
 const slash = new PokemonMove(1, 'slash', 'normal', 25, 10);
