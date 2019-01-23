@@ -2,6 +2,7 @@ import { User } from './models/user';
 import { Role } from './models/role';
 import { ReimbursementStatus } from './models/reimbursement-status';
 import { ReimbursementType } from './models/reimbursement-type';
+import { Reimbursement } from './models/reimbursement';
 
 export let DB = (function(){
   function DB(){}
@@ -26,9 +27,37 @@ export let DB = (function(){
   };
 
   let users = [
-    new User(0, 'Larry', 'larry@gmail.com', 'pw', 'Larry', 'Fine', role.employee),
-    new User(1, 'Curly', 'curly@gmail.com', 'pw', 'Curly', 'Howard', role.employee),
-    new User(2, 'Moe', 'moe@gmail.com', 'pw', 'Moe', 'Howard', role.employee)
+    new User(0, 'Ben', 'ben@gmail.com', 'pw', 'Ben', 'Snow', role.admin),
+    new User(1, 'John', 'john@gmail.com', 'pw', 'John', 'Doe', role.financeManager),
+    new User(2, 'Larry', 'larry@gmail.com', 'pw', 'Larry', 'Fine', role.employee),
+    new User(3, 'Curly', 'curly@gmail.com', 'pw', 'Curly', 'Howard', role.employee),
+    new User(4, 'Moe', 'moe@gmail.com', 'pw', 'Moe', 'Howard', role.employee)
+  ];
+
+  //new Date('2019-01-01')
+
+  let reimbursements = [
+    new Reimbursement(0, 2, 1000, 
+      new Date('2019-01-01').getTime(), 
+      new Date('2019-01-02').getTime(), 
+      'For flip flops', 1, 
+      status.denied.statusId, 
+      type.food.typeId
+    ),
+    new Reimbursement(1, 3, 200,
+      new Date('2019-01-01').getTime(),
+      new Date('2019-01-02').getTime(),
+      'Gas reimbursement', 1,
+      status.approved.statusId,
+      type.travel.typeId
+    ),
+    new Reimbursement(2, 4, 75,
+      new Date('2019-01-01').getTime(),
+      new Date('2019-01-02').getTime(),
+      'Hotel stay', 1,
+      status.pending.statusId,
+      type.lodging.typeId
+    )
   ];
 
   //------------------------------------------------------------------

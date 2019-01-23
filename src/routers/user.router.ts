@@ -18,3 +18,7 @@ userRouter.get('/:id', (req, res) => {
     let user = DB.selectUserById(id);
     res.json(user);
 });
+
+userRouter.patch('', (req, res) => {
+    
+});
