@@ -41,7 +41,7 @@ export let DB = (function(){
       return user.role === role;
     });
   };
-  DB.selectUserById = function(id: number, func: any) {
+  DB.selectUserById = function(id: number, func: (u) => void) {
     let user = users.find(user => {
       return (user.userId === id);
     });
