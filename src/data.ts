@@ -70,10 +70,11 @@ export let DB = (function(){
       return user.role === role;
     });
   };
-  DB.selectUserById = function(id: number) {
-    return users.find(user => {
-      return (user.userId === id);
-    });
+  DB.selectUserById = function(res, id: number) {
+    if(users[id]) {
+      return users[id];
+    }
+    res.sendStatus(404).send("404 User Not Found!");
   };
 
   return DB;
