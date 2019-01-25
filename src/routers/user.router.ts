@@ -1,14 +1,11 @@
 import express from 'express';
 import { User } from '../models/user';
-
-// Temporary
-import { DB } from '../data';
+import { DB } from '../data'; // Temp
 
 export const userRouter = express.Router();
 
 
 userRouter.get('', (req, res) => {
-    DB.selectAllUsers();
     res.json(DB.selectAllUsers());
 });
 

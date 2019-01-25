@@ -77,8 +77,20 @@ export let DB = (function(){
     res.sendStatus(404).send("404 User Not Found!");
   };
 
+  DB.selectAllReimbursements = function() {
+    return reimbursements;
+  };
+  DB.selectReimbursentByStatus = function(id: number) {
+    return reimbursements.filter(item => { return item.status === id; });
+  };
+  DB.selectReimbursentByUser = function(id: number) {
+    
+  };
+
   return DB;
 })();
+
+// console.log(DB.selectReimbursentByStatus(0));
 
 /* 
 const slash = new PokemonMove(1, 'slash', 'normal', 25, 10);
