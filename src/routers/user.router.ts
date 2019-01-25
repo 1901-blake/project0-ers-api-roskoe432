@@ -22,13 +22,12 @@ userRouter.patch('', (req, res) => {
     let id = parseInt(req.body.userId);
     let user = DB.selectUserById(res, id);
     // Finish check all properties
-    let b = req.body;
-    if (b.username) user.username = b.username;
-    if (b.password) user.password = b.password;
-    if (b.firstName) user.firstName = b.firstName;
-    if(b.lastName) user.lastName = b.lastName;
-    if(b.email) user.email = b.email;
-    if(b.role) user.role = b.role;
+
+    for(let prop in user) {
+        if(req.body[prop]) {
+            user[prop] = req.body[prop];
+        }
+    }
     
     console.log(id);
     res.status(200).send(user);
