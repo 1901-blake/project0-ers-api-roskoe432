@@ -5,6 +5,13 @@ import { userRouter } from './routers/user.router';
 import { reimburseRouter } from './routers/reimbursement.router';
 const app = express();
 
+const sess = {
+    secret: 'potato',
+    cookie: { secure: false },
+    resave: false,
+    saveUnitialized: false
+};
+
 app.use(bodyParser.json());
 
 app.use((req, res, next) => {
