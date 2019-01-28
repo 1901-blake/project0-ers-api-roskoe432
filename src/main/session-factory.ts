@@ -1,26 +1,16 @@
 import { Pool } from 'pg';
-import { ClientRequest } from 'http';
-import { Result } from 'range-parser';
-
-/* 
-    export POST_DB="postgres"
-    export POST_HOST="ers-revature-snow.c6tetou30arg.us-east-2.rds.amazonaws.com"
-    export POST_PW="BOOger47!"
-    export POST_USER="bsnow32"
-*/
 
 // Need to put credentials in environment variables.
 export class SessionFactory {
     private static cred = {
-        database: 'postgres',
-        host: 'ers-revature-snow.c6tetou30arg.us-east-2.rds.amazonaws.com',
-        user: 'bsnow32',
-        password: 'BOOger47!',
-        max: 10,
-        port: 5432
+        database: process.env.PG_DB,
+        host: process.env.PG_HOST,
+        user: process.env.PG_USER,
+        password: process.env.PG_PW,
+        max: process.env.PG_MAX,
+        port: process.env.PG_PORT
     };
     private static pool: Pool;
-    private static client: Object;
 
     public static GetPool(): Pool {
         if(!this.pool) {
