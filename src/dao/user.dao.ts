@@ -1,11 +1,10 @@
 import { User } from '../models/user';
-import { SessionFactory } from '../main/session-factory';
+import { Database } from '../main/database';
 import { RoleDao } from './role.dao';
 
 export class UserDao {
     public static async getAllUsers(): Promise<User[]> {
-        const client = await SessionFactory.GetPool().connect();
-        let result = await client.query('select * from "user"');
+        let result = await Database.Query('select * from "user"');
         let roles = await RoleDao.getAllRoles();
 
         return result.rows.map(e => {
@@ -15,9 +14,7 @@ export class UserDao {
     }
 
     public static async getUserById(id: number): Promise<User> {
-        const client = await SessionFactory.GetPool().connect();
-        let result = await client.query(`select * from "user" where userid = ${id}`);
-        client.release();
+        let result = await Database.Query(`select * from "user" where userid = ${id}`);
         let u = result.rows[0];
         let role = await RoleDao.getRoleById(u.role);
         return new User(id, u.username, u.email, u.password, u.firstname, u.lastname, role);
@@ -25,9 +22,8 @@ export class UserDao {
 
     public static async updateUser(req, id: number): Promise<User> {
         let b = req.body;
-        const client = await SessionFactory.GetPool().connect();
-        await client.query(
-            'update "user"' + 
+        await Database.Query(
+            'update "user"' +
             `set username = '${b.username}',` +
             `"password" = '${b.password}',` +
             `firstname = '${b.firstname}',` +
@@ -35,7 +31,10 @@ export class UserDao {
             `"role" = ${b.role}` +
             `where userid = ${id};`
         );
-        client.release();
         return await this.getUserById(id);
     }
 }
+
+UserDao.getAllUsers().then(e => {
+    console.log(e);
+});

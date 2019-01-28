@@ -25,4 +25,8 @@ export class User {
     get getFullName(): string {
         return `${this.firstName} ${this.lastName}`
     }
+
+    public static FromLiteral(obj) {
+        
+    }
 }
