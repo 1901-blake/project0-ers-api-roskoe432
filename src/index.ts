@@ -22,7 +22,7 @@ app.use((req, res, next) => {
 app.use(session(sess));
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
-app.use('/reimburse', reimburseRouter);
+app.use('/reimbursements', reimburseRouter);
 
 app.listen(3000);
 // app.listen(3000);

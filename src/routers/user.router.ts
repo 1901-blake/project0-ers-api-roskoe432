@@ -1,19 +1,21 @@
 import express from 'express';
 import { User } from '../models/user';
+import { UserDao } from '../dao/user.dao';
 
 export const userRouter = express.Router();
 
 
-userRouter.get('', (req, res) => {
-    //res.json(DB.selectAllUsers());
-    res.end('Get All Users'); // Temp
+userRouter.get('', async (req, res) => {
+    let users = await UserDao.getAllUsers();
+    console.log(users);
+    res.json(users);
+    //res.end("Getting all users");
 });
 
-userRouter.get('/:id', (req, res) => {
+userRouter.get('/:id', async (req, res) => {
     let id = parseInt(req.params.id);
-    //let user = DB.selectUserById(res, id);
-    //res.json(user);
-    res.end('User Select By Id');
+    let user = await UserDao.getUserById(id);
+    res.json(user);
 });
 
 userRouter.patch('', (req, res) => {

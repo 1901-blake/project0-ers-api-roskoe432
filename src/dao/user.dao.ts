@@ -1,42 +1,29 @@
 import { User } from '../models/user';
 import { SessionFactory } from '../main/session-factory';
+import { RoleDao } from './role.dao';
 
 export class UserDao {
-    private static instance: UserDao;
-
-    constructor() {
-        if(!UserDao.instance) {
-            UserDao.instance = this;
-        }
-        else throw new Error('UserDao can only have one or 0 instance.');
-    }
-
     public static async getAllUsers(): Promise<User[]> {
-        const client = await SessionFactory.Connect();
+        const client = await SessionFactory.GetPool().connect();
         let result = await client.query('select * from "user"');
-        
-        let list: User[] = await result.rows.map(e => {
-            return new User(e.userid, e.username, e.email, e.password, e.firstname, e.lastname, e.role);
-        });
+        let roles = await RoleDao.getAllRoles();
 
-        return list;
+        return result.rows.map(e => {
+            let role = roles[e.role-1];
+            return new User(e.userid, e.username, e.email, e.password, e.firstname, e.lastname, role);
+        });
     }
 
     public static async getUserById(id: number): Promise<User> {
-        let client = await SessionFactory.Connect();
+        const client = await SessionFactory.GetPool().connect();
         let result = await client.query(`select * from "user" where userid = ${id}`);
+        client.release();
         let u = result.rows[0];
-        return new User(id, u.username, u.email, u.password, u.firstname, u.lastname, u.role);
-    }
-
-    public static updateUser(): void {
-
+        let role = await RoleDao.getRoleById(u.role);
+        return new User(id, u.username, u.email, u.password, u.firstname, u.lastname, role);
     }
 }
 
-UserDao.getAllUsers().then(u => {
-    console.log(u);
+UserDao.getUserById(2).then(e => {
+    console.log(e);
 });
-// UserDao.getUserById(1).then(u => {
-//     console.log(u.username);
-// });

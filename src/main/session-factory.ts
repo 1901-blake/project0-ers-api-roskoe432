@@ -1,4 +1,6 @@
 import { Pool } from 'pg';
+import { ClientRequest } from 'http';
+import { Result } from 'range-parser';
 
 /* 
     export POST_DB="postgres"
@@ -7,6 +9,7 @@ import { Pool } from 'pg';
     export POST_USER="bsnow32"
 */
 
+// Need to put credentials in environment variables.
 export class SessionFactory {
     private static cred = {
         database: 'postgres',
@@ -17,8 +20,9 @@ export class SessionFactory {
         port: 5432
     };
     private static pool: Pool;
+    private static client: Object;
 
-    public static Connect(): Pool {
+    public static GetPool(): Pool {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
         }
