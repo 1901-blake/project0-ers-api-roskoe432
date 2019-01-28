@@ -36,7 +36,6 @@ export class UserDao {
             `where userid = ${id};`
         );
         client.release();
-        let user = await this.getUserById(id);
-        return user;
+        return await this.getUserById(id);
     }
 }
