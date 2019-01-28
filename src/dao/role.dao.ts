@@ -1,5 +1,5 @@
 import { Role } from '../models/role';
-import { Database } from '../main/database';
+import { Database } from './database';
 
 export class RoleDao {
     public static async getAllRoles(): Promise<Role[]> {

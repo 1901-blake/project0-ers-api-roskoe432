@@ -1,12 +1,7 @@
 import express from 'express';
-import { User } from '../models/user';
 import { UserDao } from '../dao/user.dao';
 
-
-
 export const userRouter = express.Router();
-
-
 
 userRouter.get('', async (req, res) => {
     let users = await UserDao.getAllUsers();

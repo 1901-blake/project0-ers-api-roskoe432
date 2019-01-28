@@ -1,5 +1,5 @@
 import { User } from '../models/user';
-import { Database } from '../main/database';
+import { Database } from './database';
 import { RoleDao } from './role.dao';
 
 export class UserDao {
@@ -15,26 +15,36 @@ export class UserDao {
 
     public static async getUserById(id: number): Promise<User> {
         let result = await Database.Query(`select * from "user" where userid = ${id}`);
-        let u = result.rows[0];
-        let role = await RoleDao.getRoleById(u.role);
-        return new User(id, u.username, u.email, u.password, u.firstname, u.lastname, role);
+        let user = result.rows[0];
+        return new User(id,
+            user.username, 
+            user.email, 
+            user.password, 
+            user.firstname, 
+            user.lastname, 
+            await RoleDao.getRoleById(user.role)
+        );
     }
 
     public static async updateUser(req, id: number): Promise<User> {
-        let b = req.body;
         await Database.Query(
             'update "user"' +
-            `set username = '${b.username}',` +
-            `"password" = '${b.password}',` +
-            `firstname = '${b.firstname}',` +
-            `lastname = '${b.lastname}',` +
-            `"role" = ${b.role}` +
+            `set username = '${req.body.username}',` +
+            `"password" = '${req.body.password}',` +
+            `firstname = '${req.body.firstname}',` +
+            `lastname = '${req.body.lastname}',` +
+            `"role" = ${req.body.role}` +
             `where userid = ${id};`
         );
         return await this.getUserById(id);
     }
 }
 
-UserDao.getAllUsers().then(e => {
-    console.log(e);
-});
+try {
+    UserDao.getUserById(3).then(e => {
+        console.log(e);
+    });
+} 
+catch {
+    console.log('Something went wrong');
+}

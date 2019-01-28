@@ -7,7 +7,14 @@ function LoginCheck(req, user: string, pw: string): boolean {
 }
 
 authRouter.get('/login', (req, res) => {
-    
+    if (req.body.username === 'blake' && req.body.password === 'password') {
+        const user = {
+            username: req.body.username,
+            role: 'admin'
+        };
+        req.session.user = user;
+        res.json(user);
+    }
 });
 
 authRouter.get('/info', (req, res) => {
