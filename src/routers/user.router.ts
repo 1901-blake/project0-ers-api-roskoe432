@@ -18,12 +18,25 @@ userRouter.get('/:id', async (req, res) => {
     res.json(user);
 });
 
-userRouter.patch('', (req, res) => {
-    let id = parseInt(req.body.userId);
-    //let user = DB.selectUserById(res, id);
-    // Finish check all properties
-    
-    console.log(id);
-    //res.status(200).send(user);
-    res.end("User Patch"); // Temp
+userRouter.patch('', async (req, res) => {
+    let id = parseInt(req.body.userid);
+    // console.log(id);
+    let user = await UserDao.updateUser(req, id);    
+    res.status(201).send(user);
+    // res.end(`Updating User: ${id}`);
 });
+
+/* 
+    {
+        "userid": 5;
+        "username": "Moe";
+        "password": "newpassword";
+        "firstname": "Moe";
+        "lastname": "Howard";
+        "email": "moe@gmail.com";
+        "role": {
+            "roleid": 3,
+            "role": "associate"
+        };
+    }
+*/

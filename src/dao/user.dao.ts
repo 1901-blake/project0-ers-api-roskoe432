@@ -22,8 +22,21 @@ export class UserDao {
         let role = await RoleDao.getRoleById(u.role);
         return new User(id, u.username, u.email, u.password, u.firstname, u.lastname, role);
     }
-}
 
-UserDao.getUserById(2).then(e => {
-    console.log(e);
-});
+    public static async updateUser(req, id: number): Promise<User> {
+        let b = req.body;
+        const client = await SessionFactory.GetPool().connect();
+        await client.query(
+            'update "user"' + 
+            `set username = '${b.username}',` +
+            `"password" = '${b.password}',` +
+            `firstname = '${b.firstname}',` +
+            `lastname = '${b.lastname}',` +
+            `"role" = ${b.role}` +
+            `where userid = ${id};`
+        );
+        client.release();
+        let user = await this.getUserById(id);
+        return user;
+    }
+}
