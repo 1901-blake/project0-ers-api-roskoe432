@@ -39,12 +39,3 @@ export class UserDao {
         return await this.getUserById(id);
     }
 }
-
-try {
-    UserDao.getUserById(3).then(e => {
-        console.log(e);
-    });
-} 
-catch {
-    console.log('Something went wrong');
-}

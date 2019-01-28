@@ -1,7 +1,6 @@
 import { Pool } from 'pg';
 import { QueryResult } from 'pg';
 
-// Need to put credentials in environment variables.
 export class Database {
     private static cred = {
         database: process.env.PG_DB,
@@ -13,7 +12,7 @@ export class Database {
     };
     private static pool: Pool;
 
-    private static GetPool(): Pool {
+    public static GetPool(): Pool {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
         }
