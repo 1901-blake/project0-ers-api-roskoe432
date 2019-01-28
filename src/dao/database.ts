@@ -1,5 +1,6 @@
-import { Pool } from 'pg';
+import { Pool, PoolClient, Query } from 'pg';
 import { QueryResult } from 'pg';
+import pg from 'pg';
 
 export class Database {
     private static cred = {
@@ -11,6 +12,7 @@ export class Database {
         port: 5432
     };
     private static pool: Pool;
+    private static client: PoolClient;
 
     public static GetPool(): Pool {
         if(!this.pool) {
@@ -19,10 +21,11 @@ export class Database {
         return this.pool;
     }
 
-    public static async Query(query_string: string): Promise<QueryResult> {
-        const client = await this.GetPool().connect();
-        let results = await client.query(query_string);
+    private static async Query(query_string: string): Promise<QueryResult> {
+        let pool = this.GetPool();
+        const client = await pool.connect();
+        let result = await client.query(query_string);
         client.release();
-        return results;
+        return result;
     }
 }

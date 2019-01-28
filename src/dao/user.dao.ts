@@ -4,7 +4,10 @@ import { RoleDao } from './role.dao';
 
 export class UserDao {
     public static async getAllUsers(): Promise<User[]> {
-        let result = await Database.Query('select * from "user"');
+        const client = await Database.GetPool().connect();
+        let result = await client.query('select * from "user"');
+        client.release();
+
         let roles = await RoleDao.getAllRoles();
 
         return result.rows.map(e => {
@@ -14,7 +17,10 @@ export class UserDao {
     }
 
     public static async getUserById(id: number): Promise<User> {
-        let result = await Database.Query(`select * from "user" where userid = ${id}`);
+        let client = await Database.GetPool().connect();
+        let result = await client.query(`select * from "user" where userid = ${id}`);
+        client.release();
+        
         let user = result.rows[0];
         return new User(id,
             user.username, 
@@ -27,7 +33,8 @@ export class UserDao {
     }
 
     public static async updateUser(req, id: number): Promise<User> {
-        await Database.Query(
+        const client = await Database.GetPool().connect();
+        await client.query(
             'update "user"' +
             `set username = '${req.body.username}',` +
             `"password" = '${req.body.password}',` +
@@ -36,6 +43,7 @@ export class UserDao {
             `"role" = ${req.body.role}` +
             `where userid = ${id};`
         );
+        client.release();
         return await this.getUserById(id);
     }
 }

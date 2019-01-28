@@ -4,6 +4,7 @@ import { UserDao } from '../dao/user.dao';
 export const userRouter = express.Router();
 
 userRouter.get('', async (req, res) => {
+    
     let users = await UserDao.getAllUsers();
     console.log(users);
     res.json(users);
