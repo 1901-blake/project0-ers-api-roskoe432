@@ -4,10 +4,7 @@ import { RoleDao } from './role.dao';
 
 export class UserDao {
     public static async getAllUsers(): Promise<User[]> {
-        const client = await Database.GetPool().connect();
-        let result = await client.query('select * from "user"');
-        client.release();
-
+        let result = await Database.Query('select * from "user"');
         let roles = await RoleDao.getAllRoles();
 
         return result.rows.map(e => {
@@ -17,12 +14,15 @@ export class UserDao {
     }
 
     public static async getUserById(id: number): Promise<User> {
-        let client = await Database.GetPool().connect();
-        let result = await client.query(`select * from "user" where userid = ${id}`);
-        client.release();
+        let res = await Database.Query(
+            'select * from "user" where userid = $1', 
+            [ id ]
+        );
+
+        console.log(res.rows);
         
-        let user = result.rows[0];
-        return new User(id,
+        let user = res.rows[0];
+        return new User(user.userid,
             user.username, 
             user.email, 
             user.password, 

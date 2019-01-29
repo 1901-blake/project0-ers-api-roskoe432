@@ -12,7 +12,6 @@ export class Database {
         port: 5432
     };
     private static pool: Pool;
-    private static client: PoolClient;
 
     public static GetPool(): Pool {
         if(!this.pool) {
@@ -21,18 +20,12 @@ export class Database {
         return this.pool;
     }
 
-    
-    public static async Query(text: string, params: any[]): Promise<QueryResult> {
-        let client: PoolClient;
-        try {
-            client = await this.GetPool().connect();
-            return await client.query(text);
-        }
-        catch {
-            return undefined;
-        }
-        finally {
-            if(client) client.release();
-        }
+    public static async Query(text: string): Promise<QueryResult>
+    public static async Query(text: string, params): Promise<QueryResult>
+    public static async Query(text: string, params?): Promise<QueryResult> {
+        const client = await this.GetPool().connect();
+        try { return await client.query(text, params); }
+        catch { return null; }
+        finally { if(client) client.release(); }
     }
 }

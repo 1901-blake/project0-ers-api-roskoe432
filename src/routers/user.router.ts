@@ -4,10 +4,13 @@ import { UserDao } from '../dao/user.dao';
 export const userRouter = express.Router();
 
 userRouter.get('', async (req, res) => {
-    
+    console.log('Getting all users');
     let users = await UserDao.getAllUsers();
-    console.log(users);
-    res.json(users);
+    if(users) {
+        res.json(users);
+    } else {
+        res.status(401).send('Failed!');
+    }
 });
 
 userRouter.get('/:id', async (req, res) => {
