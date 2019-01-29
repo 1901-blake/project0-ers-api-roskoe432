@@ -21,11 +21,12 @@ export class Database {
         return this.pool;
     }
 
-    private static async Query(query_string: string): Promise<QueryResult> {
+    
+    public static async Query(text: string, params: any[]): Promise<QueryResult> {
         let client: PoolClient;
         try {
             client = await this.GetPool().connect();
-            return await client.query(query_string);
+            return await client.query(text);
         }
         catch {
             return undefined;
