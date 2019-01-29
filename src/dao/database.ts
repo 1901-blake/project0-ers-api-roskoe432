@@ -21,11 +21,17 @@ export class Database {
     }
 
     public static async Query(text: string): Promise<QueryResult>
-    public static async Query(text: string, params): Promise<QueryResult>
-    public static async Query(text: string, params?): Promise<QueryResult> {
+    public static async Query(text: string, params: any[]): Promise<QueryResult>
+    public static async Query(text: string, params?: any[]): Promise<QueryResult> {
         const client = await this.GetPool().connect();
-        try { return await client.query(text, params); }
-        catch { return null; }
-        finally { if(client) client.release(); }
+        try { 
+            return await client.query(text, params); 
+        }
+        catch { 
+            return null; 
+        }
+        finally { 
+            client.release(); 
+        }
     }
 }

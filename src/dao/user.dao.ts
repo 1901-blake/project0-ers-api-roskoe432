@@ -14,36 +14,31 @@ export class UserDao {
     }
 
     public static async getUserById(id: number): Promise<User> {
-        let res = await Database.Query(
-            'select * from "user" where userid = $1', 
-            [ id ]
+        let { rows } = await Database.Query(
+            'select * from "user" where userid = $1', [id]
         );
+        if(!rows[0]) return null;
 
-        console.log(res.rows);
-        
-        let user = res.rows[0];
-        return new User(user.userid,
-            user.username, 
-            user.email, 
-            user.password, 
-            user.firstname, 
-            user.lastname, 
-            await RoleDao.getRoleById(user.role)
+        return new User(id,
+            rows[0].username,
+            rows[0].email,
+            rows[0].password,
+            rows[0].firstname,
+            rows[0].lastname,
+            null
         );
     }
 
     public static async updateUser(req, id: number): Promise<User> {
-        const client = await Database.GetPool().connect();
-        await client.query(
-            'update "user"' +
-            `set username = '${req.body.username}',` +
-            `"password" = '${req.body.password}',` +
-            `firstname = '${req.body.firstname}',` +
-            `lastname = '${req.body.lastname}',` +
-            `"role" = ${req.body.role}` +
-            `where userid = ${id};`
+        let { username, password, firstname, lastname, role } = req.body;
+        await Database.Query(
+            'update "user" set username = $1, "password" = $2, firstname = $3, lastname = $4, "role" = $5 where userid = $6', 
+            [ username, password, firstname, lastname, role, id ]
         );
-        client.release();
         return await this.getUserById(id);
     }
 }
+
+UserDao.getUserById(6).then(e => {
+    console.log(e);
+});
