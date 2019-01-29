@@ -22,10 +22,16 @@ export class Database {
     }
 
     private static async Query(query_string: string): Promise<QueryResult> {
-        let pool = this.GetPool();
-        const client = await pool.connect();
-        let result = await client.query(query_string);
-        client.release();
-        return result;
+        let client: PoolClient;
+        try {
+            client = await this.GetPool().connect();
+            return await client.query(query_string);
+        }
+        catch {
+            return undefined;
+        }
+        finally {
+            if(client) client.release();
+        }
     }
 }
