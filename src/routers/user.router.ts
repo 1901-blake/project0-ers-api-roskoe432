@@ -31,5 +31,4 @@ userRouter.patch('', async (req, res) => {
     } else {
         res.status(401).send('User not updated!');
     }
-    // res.end('Testing');
 });
