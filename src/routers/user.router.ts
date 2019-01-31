@@ -10,7 +10,6 @@ userRouter.get('', async (req, res) => {
     } else {
         res.status(401).send('Could not retrieve users.');
     }
-    // res.end('Testing');
 });
 
 userRouter.get('/:id', async (req, res) => {
@@ -20,7 +19,6 @@ userRouter.get('/:id', async (req, res) => {
     } else {
         res.status(401).send('User not found!');
     }
-    // res.end('Testing');
 });
 
 userRouter.patch('', async (req, res) => {

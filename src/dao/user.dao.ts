@@ -77,8 +77,6 @@ export class UserDao {
         }
     }
 
-    // duplicate key value violates unique constraint "user_username_key"
-
     public static async update(req): Promise<User> {
         const client = await Database.Connect();
         try {
