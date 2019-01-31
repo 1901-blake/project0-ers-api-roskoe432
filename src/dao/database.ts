@@ -13,22 +13,27 @@ export class Database {
     };
     private static pool: Pool;
 
-    public static GetPool(): Pool {
+    public static async Connect(): Promise<PoolClient> {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
         }
-        return this.pool;
+        return this.pool.connect();
     }
 
-    public static async Query(text: string): Promise<QueryResult>
-    public static async Query(text: string, params: any[]): Promise<QueryResult>
-    public static async Query(text: string, params?: any[]): Promise<QueryResult> {
-        const client = await this.GetPool().connect();
+    private static async Query(text: string, params?: any[]): Promise<QueryResult> {
+        const client = await this.Connect();
+        console.log(client);
         try { 
-            return await client.query(text, params); 
+            let result = await client.query(text, params); 
+            // if(!result || result.rowCount === 0) {
+            //     console.log(result);
+            //     throw new Error();
+            // }
+            return result;
         }
         catch { 
-            return null; 
+            console.log('Error Happen');
+            return undefined; 
         }
         finally { 
             client.release(); 
