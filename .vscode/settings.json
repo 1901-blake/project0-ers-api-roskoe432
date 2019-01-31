@@ -1,0 +1,10 @@
+{
+    "files.exclude": {
+        ".vscode": true,
+        "**/.gitignore": true,
+        "**/*.json": true,
+        "**/*.sql": true,
+        "node_modules": true,
+        "README.md": true
+    }
+}

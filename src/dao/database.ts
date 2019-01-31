@@ -20,19 +20,16 @@ export class Database {
         return this.pool.connect();
     }
 
-    private static async Query(text: string, params?: any[]): Promise<QueryResult> {
+    public static async Query(text: string, params?: any[]): Promise<QueryResult> {
         const client = await this.Connect();
-        console.log(client);
         try { 
             let result = await client.query(text, params); 
-            // if(!result || result.rowCount === 0) {
-            //     console.log(result);
-            //     throw new Error();
-            // }
+            if(!result || result.rowCount === 0) {
+                throw new Error();
+            }
             return result;
         }
         catch { 
-            console.log('Error Happen');
             return undefined; 
         }
         finally { 
