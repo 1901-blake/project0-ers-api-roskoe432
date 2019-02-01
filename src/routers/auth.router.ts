@@ -1,22 +1,30 @@
 import express from 'express';
+import { UserDao } from '../dao/user.dao';
 
 export const authRouter = express.Router();
 
-function LoginCheck(req, user: string, pw: string): boolean {
-    return (req.body.username === user && req.body.password === pw);
-}
-
-authRouter.get('/login', (req, res) => {
-    if (req.body.username === 'blake' && req.body.password === 'password') {
-        const user = {
-            username: req.body.username,
-            role: 'admin'
+authRouter.post('/login', async (req, res) => {
+    let user = await UserDao.getByLogin(req);
+    if(user) {
+        let u = {
+            username: user.username,
+            firstname: user.firstName,
+            lastname: user.lastName,
+            role: user.role.role
         };
-        req.session.user = user;
-        res.json(user);
+        console.log(u);
+        req.session.user = u;
+        res.json(u);
+    }
+    else {
+        res.status(401).send('Invalid Username or Password!');
     }
 });
 
 authRouter.get('/info', (req, res) => {
-    res.json(req.session.user);
+    if(req.session.user) {
+        res.status(201).json(req.session.user);
+    } else {
+        res.status(400).send('No User Logged In.');
+    }
 });

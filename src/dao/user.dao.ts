@@ -40,4 +40,21 @@ export class UserDao {
 
         return await this.getById(userid);
     }
+
+    public static async getByLogin(req): Promise<User> {
+        let { username, password } = req.body;
+        let res = await Database.Query('select * from "user" where username = $1 and password = $2', [ username, password ]);
+        if(!res) return undefined;
+
+        let row = res.rows[0];
+        return new User(
+            row.userid,
+            row.username,
+            row.email,
+            row.password,
+            row.firstname,
+            row.lastname,
+            await RoleDao.getById(row.role)
+        );
+    }
 }
