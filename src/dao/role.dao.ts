@@ -17,11 +17,3 @@ export class RoleDao {
         return new Role(res.rows[0].roleid, res.rows[0].role);
     }
 }
-
-// RoleDao.getAll().then(e => {
-//     console.log(e);
-// });
-
-RoleDao.getById(4).then(e => {
-    console.log(e);
-});

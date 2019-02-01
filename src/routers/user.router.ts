@@ -23,7 +23,6 @@ userRouter.get('/:id', async (req, res) => {
 
 userRouter.patch('', async (req, res) => {
     let user = await UserDao.update(req);
-    console.log(user);
     if(user) {
         res.status(201).send(user);
     } else {

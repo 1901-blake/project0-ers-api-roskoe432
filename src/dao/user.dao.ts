@@ -34,7 +34,7 @@ export class UserDao {
     public static async update(req): Promise<User> {
         let { userid, username, email, password, firstname, lastname, role } = req.body;
 
-        let res = await Database.Query(
+        await Database.Query(
             'update "user" set username = $1, "password" = $2, firstname = $3, lastname = $4, email = $5, "role" = $6 where userid = $7;',
             [username, password, firstname, lastname, email, role, userid]);
 
