@@ -62,7 +62,6 @@ export class RemDao {
         });
     }
 
-     // NEEDS TO BE TESTED
     public static async create(req): Promise<Reimbursement> {
         let e = req.body;
         let res = await Database.Query(
@@ -73,7 +72,6 @@ export class RemDao {
         return await this.getById(res.rows[0].reimbursementid);
     }
 
-    // NEEDS TO BE TESTED
     public static async update(req): Promise<Reimbursement> {
         let e = req.body;
         await Database.Query(
