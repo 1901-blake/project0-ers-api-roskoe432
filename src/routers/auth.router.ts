@@ -31,8 +31,9 @@ authRouter.post('/login', async (req, res) => {
 
 authRouter.post('/logout', async (req, res) => {
     if(req.session.user) {
+        let u = req.session.user;
         req.session.user = null;
-        res.status(201).send('User has logged out!');
+        res.status(201).json(u);
     } else {
         res.sendStatus(400);
     }
