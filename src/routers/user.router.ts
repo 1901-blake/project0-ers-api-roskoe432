@@ -1,6 +1,6 @@
 import express from 'express';
 import { UserDao } from '../dao/user.dao';
-import { authMiddleware } from '../middleware/auth.middleware';
+import { authMiddleware, verifyUserId } from '../middleware/auth.middleware';
 
 
 
@@ -23,7 +23,9 @@ async (req, res) => {
 
 userRouter.get('/:id', 
 [authMiddleware('finance manager', 'associate'), 
+verifyUserId,
 async (req, res) => {
+
     let user = await UserDao.getById(req.params.id);
     if(user) {
         res.status(201).json(user);

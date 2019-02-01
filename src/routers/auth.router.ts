@@ -1,13 +1,17 @@
 import express from 'express';
 import { UserDao } from '../dao/user.dao';
 
+
+
 export const authRouter = express.Router();
+
+
 
 authRouter.post('/login', async (req, res) => {
     let user = await UserDao.getByLogin(req);
     if(user) {
         let u = {
-            // id: user.userId,
+            id: user.userId,
             username: user.username,
             firstname: user.firstName,
             lastname: user.lastName,
@@ -23,6 +27,8 @@ authRouter.post('/login', async (req, res) => {
     }
 });
 
+
+
 authRouter.post('/logout', async (req, res) => {
     if(req.session.user) {
         req.session.user = null;
@@ -31,6 +37,8 @@ authRouter.post('/logout', async (req, res) => {
         res.sendStatus(400);
     }
 });
+
+
 
 authRouter.get('/info', (req, res) => {
     if(req.session.user) {

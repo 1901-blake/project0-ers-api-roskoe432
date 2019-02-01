@@ -24,3 +24,14 @@ export function authMiddleware(...roles: string[]) {
         }
     }
 }
+
+export function verifyUserId(req, res, next) {
+    let { role, id } = req.session.user;
+    if(role === 'associate') {
+        if(id === req.params.id) {
+            next();
+            return;
+        }
+    }
+    res.sendStatus(403);
+}
