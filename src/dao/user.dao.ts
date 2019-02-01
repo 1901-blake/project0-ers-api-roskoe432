@@ -39,7 +39,5 @@ export class UserDao {
             [username, password, firstname, lastname, email, role, userid]);
 
         return await this.getById(userid);
-
-        const client = await Database.Connect();
     }
 }
