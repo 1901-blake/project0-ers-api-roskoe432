@@ -17,7 +17,7 @@ authRouter.post('/login', async (req, res) => {
         res.json(u);
     }
     else {
-        res.status(401).send('Invalid Username or Password!');
+        res.status(400).send('BAD REQUEST');
     }
 });
 
