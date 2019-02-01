@@ -25,7 +25,6 @@ userRouter.get('/:id',
 [authMiddleware('finance manager', 'associate'), 
 verifyUserId,
 async (req, res) => {
-
     let user = await UserDao.getById(req.params.id);
     if(user) {
         res.status(201).json(user);

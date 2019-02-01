@@ -27,8 +27,11 @@ export function authMiddleware(...roles: string[]) {
 
 export function verifyUserId(req, res, next) {
     let { role, id } = req.session.user;
+    console.log(typeof(id));
+    console.log(typeof(req.params.id));
+    console.log(req.params.id);
     if(role === 'associate') {
-        if(id === req.params.id) {
+        if(id === +req.params.id) {
             next();
             return;
         }
