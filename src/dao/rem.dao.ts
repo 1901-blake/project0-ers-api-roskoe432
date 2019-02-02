@@ -2,8 +2,7 @@ import { Reimbursement } from '../models/reimbursement';
 import { Database } from './database';
 import { RemStatusDao } from './rem-status.dao';
 import { RemTypeDao } from './rem-type.dao';
-
-import { Util } from '../utility/util';
+import { UserDao } from './user.dao';
 
 export class RemDao {
     private static async getById(id: number): Promise<Reimbursement> {
@@ -13,14 +12,14 @@ export class RemDao {
         let e = res.rows[0];
         return new Reimbursement(
             e.reimbursementid,
-            e.author,
+            await UserDao.getById(e.author),
             e.amount,
             e.datesubmitted,
             e.dateresolved,
             e.description,
-            e.resolver,
-            e.status,
-            e.type
+            await UserDao.getById(e.resolver),
+            await RemStatusDao.getById(e.status),
+            await RemTypeDao.getById(e.type)
         );
     }
 
@@ -28,38 +27,46 @@ export class RemDao {
         let res = await Database.Query('select * from reimbursement where status = $1;', [ id ]);
         if(!res) return undefined;
 
-        return res.rows.map(e => {
-            return new Reimbursement(
-                e.reimbursementid, 
-                e.author, 
-                e.amount, 
-                e.datesubmitted, 
-                e.dateresolved, 
-                e.description, 
-                e.resolver, 
-                e.status, 
-                e.type
-            );
-        });
+        let list: Reimbursement[] = [];
+
+        for(let i = 0; i < res.rows.length; i++) {
+            let e = res.rows[i];
+            list.push(new Reimbursement(
+                e.reimbursementid,
+                await UserDao.getById(e.author),
+                e.amount,
+                e.datesubmitted,
+                e.dateresolved,
+                e.description,
+                await UserDao.getById(e.resolver),
+                await RemStatusDao.getById(e.status),
+                await RemTypeDao.getById(e.type)
+            ));
+        }
+
+        return list;
     }
 
     public static async getByUser(id: number): Promise<Reimbursement[]> {
         let res = await Database.Query('select * from reimbursement where author = $1;', [id]);
         if (!res) return undefined;
 
-        return res.rows.map(e => {
-            return new Reimbursement(
+        let list: Reimbursement[] = [];
+        for (let i = 0; i < res.rows.length; i++) {
+            let e = res.rows[i];
+            list.push(new Reimbursement(
                 e.reimbursementid,
-                e.author,
+                await UserDao.getById(e.author),
                 e.amount,
                 e.datesubmitted,
                 e.dateresolved,
                 e.description,
-                e.resolver,
-                e.status,
-                e.type
-            );
-        });
+                await UserDao.getById(e.resolver),
+                await RemStatusDao.getById(e.status),
+                await RemTypeDao.getById(e.type)
+            ));
+        }
+        return list;
     }
 
     public static async create(req): Promise<Reimbursement> {
