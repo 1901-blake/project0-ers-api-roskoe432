@@ -2,19 +2,25 @@ import { ReimbursementStatus } from '../models/reimbursement-status'
 import { Database } from './database';
 
 export class RemStatusDao {
-    public static async getAll(): Promise<ReimbursementStatus[]> {
-        let res = await Database.Query('select * from reimbursementstatus');
-        if (!res) return undefined;
+    private static statuses: ReimbursementStatus[];
 
-        return res.rows.map(e => {
-            return new ReimbursementStatus(e.statusid, e.status);
-        });
+    public static async getAll(): Promise<ReimbursementStatus[]> {
+        if(!this.statuses) {
+            let res = await Database.Query('select * from reimbursementstatus');
+            if (!res) return undefined;
+
+            this.statuses = res.rows.map(e => {
+                return new ReimbursementStatus(e.statusid, e.status);
+            });
+        }
+        return this.statuses;
     }
 
     public static async getById(id: number): Promise<ReimbursementStatus> {
-        let res = await Database.Query('select * from reimbursementstatus where statusid = $1', [id]);
-        if (!res) return undefined;
-        let row = res.rows[0];
-        return new ReimbursementStatus(row.statusid, row.status);
+        let list = await this.getAll();
+        if(!list) return undefined;
+        return list.find(e => {
+            return e.statusId === id;
+        });
     }
 }

@@ -38,13 +38,3 @@ authRouter.post('/logout', async (req, res) => {
         res.sendStatus(400);
     }
 });
-
-
-
-authRouter.get('/info', (req, res) => {
-    if(req.session.user) {
-        res.status(201).json(req.session.user);
-    } else {
-        res.status(400).send('No User Logged In.');
-    }
-});

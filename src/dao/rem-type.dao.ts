@@ -2,6 +2,8 @@ import { ReimbursementType } from '../models/reimbursement-type'
 import { Database } from './database';
 
 export class RemTypeDao {
+    private static types: ReimbursementType[];
+
     public static async getAll(): Promise<ReimbursementType[]> {
         let res = await Database.Query('select * from reimbursementtype');
         if(!res) return undefined;

@@ -31,7 +31,9 @@ export function verifyUserId(req, res, next) {
         if(id === +req.params.id) {
             next();
             return;
+        } else {
+            res.sendStatus(403);
         }
     }
-    res.sendStatus(403);
+    next();
 }
