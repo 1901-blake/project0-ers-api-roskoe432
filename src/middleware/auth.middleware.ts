@@ -25,15 +25,17 @@ export function authMiddleware(...roles: string[]) {
     }
 }
 
-export function verifyUserId(req, res, next) {
-    let { role, id } = req.session.user;
-    if(role === 'associate') {
-        if(id === +req.params.id) {
-            next();
-            return;
-        } else {
-            res.sendStatus(403);
-        }
+export function edgeCaseMiddleware(param) {
+    return function(req, res, next) {
+        let { role, id } = req.session.user;
+        if(role === 'associate') {
+            if(id === +req.params[param]) {
+                next();
+                return;
+            } else {
+                res.sendStatus(403);
+            }
+        }   
+        next();
     }
-    next();
 }

@@ -57,4 +57,16 @@ export class UserDao {
             await RoleDao.getById(row.role)
         );
     }
+
+    public static async create(req) {
+        let e = req.body;
+        let res = await Database.Query(
+            'insert into "user" (username, "password", firstname, lastname, email, "role") ' +
+            'values ($1, $2, $3, $4, $5, $6) returning userid;',
+            [e.username, e.password, e.firstname, e.lastname, e.email, e.role]);
+
+        if(!res) return undefined;
+
+        return await this.getById(res.rows[0].userid);
+    }
 }

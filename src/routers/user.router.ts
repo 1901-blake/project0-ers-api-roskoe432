@@ -1,6 +1,6 @@
 import express from 'express';
 import { UserDao } from '../dao/user.dao';
-import { authMiddleware, verifyUserId } from '../middleware/auth.middleware';
+import { authMiddleware, edgeCaseMiddleware } from '../middleware/auth.middleware';
 
 
 
@@ -23,7 +23,7 @@ async (req, res) => {
 
 userRouter.get('/:id', 
 [authMiddleware('finance manager', 'associate'), 
-verifyUserId,
+edgeCaseMiddleware('id'),
 async (req, res) => {
     let user = await UserDao.getById(req.params.id);
     if(user) {
@@ -43,5 +43,16 @@ async (req, res) => {
         res.status(201).json(user);
     } else {
         res.status(401).send('User not updated!');
+    }
+}]);
+
+
+
+userRouter.post('/', [authMiddleware('admin'), async (req, res) => {
+    let user = await UserDao.create(req);
+    if (user) {
+        res.status(201).json(user);
+    } else {
+        res.status(401).send('Could not submit reimbursement.');
     }
 }]);

@@ -1,6 +1,6 @@
 import express from 'express';
 import { RemDao } from '../dao/rem.dao';
-import { authMiddleware, verifyUserId } from '../middleware/auth.middleware';
+import { authMiddleware, edgeCaseMiddleware } from '../middleware/auth.middleware';
 
 
 
@@ -23,7 +23,7 @@ async (req, res) => {
 
 reimburseRouter.get('/user/:user', 
 [authMiddleware('finance manager', 'associate'), 
-verifyUserId,
+edgeCaseMiddleware('user'),
 async (req, res) => {
     let rems = await RemDao.getByUser(req.params.user);
     if (rems) {

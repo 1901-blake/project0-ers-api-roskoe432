@@ -2,7 +2,7 @@ import express from 'express';
 import session from 'express-session';
 import bodyParser from 'body-parser';
 import { userRouter } from './routers/user.router';
-import { reimburseRouter } from './routers/reimbursement.router';
+import { reimburseRouter } from './routers/rem.router'
 import { authRouter } from './routers/auth.router';
 
 const app = express();

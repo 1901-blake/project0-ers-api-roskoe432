@@ -7,25 +7,31 @@ import { ReimbursementType } from "./reimbursement-type";
 //  an employee would submit
 
 export class Reimbursement {
-    reimbursementId: number; // primary key
+    reimbursementId: number;
     author: User;
-    amount: number; // not null
-    dateSubmitted: number; // not null
-    dateResolved: number; // not null
-    description: string; // not null
-    resolver: User; // foreign key -> User
-    status: ReimbursementStatus; // foreign key -> ReimbursementStatus, not null
-    type: ReimbursementType; // foreign key -> ReimbursementType
+    amount: number;
+    dateSubmitted: Date;
+    dateResolved: Date;
+    description: string;
+    resolver: User;
+    status: ReimbursementStatus;
+    type: ReimbursementType;
    
     constructor(id: number, author: User, amount: number, dateSubmitted: number, dateResolved: number, description: string, resolver: User, status: ReimbursementStatus, type: ReimbursementType) {
         this.reimbursementId = id;
         this.author = author;
         this.amount = amount;
-        this.dateSubmitted = dateSubmitted;
-        this.dateResolved = dateResolved;
+        this.dateSubmitted = Reimbursement.toDateObject(dateSubmitted);
+        this.dateResolved = Reimbursement.toDateObject(dateResolved);
         this.description = description;
         this.resolver = resolver;
         this.status = status;
         this.type = type;
+    }
+
+    private static toDateObject(value: number) {
+        let t = new Date(1970, 1, 1);
+        t.setSeconds(value);
+        return t;
     }
 }
