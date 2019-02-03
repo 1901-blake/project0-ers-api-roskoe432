@@ -4,7 +4,6 @@ html {
 }
 
 #wrapper {
-    background-color: grey;
     padding: 10px; 
 }
 
@@ -24,4 +23,10 @@ form {
 
 form input, form label {
     margin: 0 auto;
+}
+
+footer {
+    text-align: center;
+    margin: 0;
+    padding: 10px;
 }

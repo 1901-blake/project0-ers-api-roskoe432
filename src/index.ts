@@ -13,13 +13,23 @@ const sess = {
     saveUninitialized: false
 };
 
-app.use(bodyParser.json());
-app.use((req, res, next) => {
-    console.log(`request was made with url: ${req.path} and method: ${req.method}`);
-    next(); // will pass the request on to search for the next piece of middleware
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
 });
 
+app.use(bodyParser.json());
 app.use(session(sess));
+
+app.use((req, res, next) => {
+    res.header('Access-Control-Allow-Origin', `http://localhost:5500`);
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    next();
+});
+
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
 app.use('/reimbursements', reimburseRouter);
