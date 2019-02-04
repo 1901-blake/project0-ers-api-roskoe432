@@ -24,7 +24,7 @@ export class RemDao {
     }
 
     public static async getByStatus(id: number): Promise<Reimbursement[]> {
-        let res = await Database.Query('select * from reimbursement where status = $1;', [ id ]);
+        let res = await Database.Query('select * from reimbursement where status = $1 order by datesubmitted;', [ id ]);
         if(!res) return undefined;
 
         let list: Reimbursement[] = [];

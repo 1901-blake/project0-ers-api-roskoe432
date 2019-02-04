@@ -13,6 +13,12 @@ export function authMiddleware(...roles: string[]) {
             res.sendStatus(401);
             return;
         }
+
+        if (roles && roles[0] === 'all') {
+            next();
+            return;
+        }
+
         const hasPermission = roles.some(role => {
             return ( user.role === role );
         });
