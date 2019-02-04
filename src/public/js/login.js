@@ -6,7 +6,7 @@ function login(e) {
 
     const credentials = { username, password };
 
-    fetch('http://localhost:5500/auth/login', {
+    fetch('http://localhost:<port#>/auth/login', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',
@@ -15,7 +15,7 @@ function login(e) {
         credentials: 'include',
         body: JSON.stringify(credentials)
     }).then(res => {
-        window.location = 'http://localhost:5500/public/home.html';
+        window.location = 'http://localhost:<port#>/public/home.html';
     }).catch(err => {
         console.log(err);
     });
