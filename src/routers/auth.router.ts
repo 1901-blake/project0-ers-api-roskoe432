@@ -18,7 +18,7 @@ authRouter.post('/login', async (req, res) => {
             role: user.role.role
         };
         req.session.user = u;
-        res.json(user);
+        res.status(200).json(user);
     }
     else {
         res.status(400).json({
