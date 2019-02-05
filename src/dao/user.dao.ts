@@ -61,6 +61,7 @@ export class UserDao {
         return this.fromLiteral(res.rows[0]);
     }
 
+    
     public static async getByLogin(req): Promise<User> {
         let { username, password } = req.body;
         let res = await Database.Query(
