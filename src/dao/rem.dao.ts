@@ -1,35 +1,95 @@
 import { Reimbursement } from '../models/reimbursement';
-import { Database } from './database';
+import { Role } from '../models/role';
+import { User } from '../models/user';
+import { ReimbursementStatus } from '../models/reimbursement-status';
+import { ReimbursementType } from '../models/reimbursement-type';
+import { Database, IQueryable } from './database';
 
 export class RemDao {
-    private static fromLiteral(obj) {
+    private static getQuery(cond?: string): string {
+        return 'select r.*, ' +
+            'u.username as "a_username", ' +
+            'u.firstname as "a_firstname", ' +
+            'u.lastname as "a_lastname", ' +
+            'u."password" as "a_password", ' +
+            'u.email as "a_email", ' +
+            'u."role" as "a_role", ' +
+            '(select "role"."role" from "role" where "role".roleid = u."role") as "a_rolename", ' +
+            'u2.username as "r_username", ' +
+            'u2.firstname as "r_firstname", ' +
+            'u2.lastname as "r_lastname", ' +
+            'u2."password" as "r_password", ' +
+            'u2.email as "r_email", ' +
+            'u2."role" as "r_role", ' +
+            '(select "role"."role" from "role" where "role".roleid = u2."role") as "r_rolename", ' +
+            's.status as "statusname", ' +
+            't."type" as "typename" ' +
+
+            'from reimbursement as r ' +
+            'join "user" as u ' +
+            'on u.userid = r.author ' +
+            'join "user" as u2 ' +
+            'on u2.userid = r.resolver ' +
+            'join reimbursementstatus as s ' +
+            'on s.statusid = r.status ' +
+            'join reimbursementtype as t ' +
+            'on t.typeid = r."type"' + (!cond ? '' : ' ' + cond) + ';';
+    }
+    private static fromLiteral(obj): Reimbursement {
+        let authorUser = new User(
+            obj.author, 
+            obj.a_username, 
+            obj.a_email, 
+            obj.a_password, 
+            obj.a_firstname, 
+            obj.a_lastname, 
+            new Role(obj.a_role, obj.a_rolename)
+        );
+        let resolverUser = new User(
+            obj.resolver,
+            obj.r_username,
+            obj.r_email,
+            obj.r_password,
+            obj.r_firstname,
+            obj.r_lastname,
+            new Role(obj.r_role, obj.r_rolename)
+        );
+        let status = new ReimbursementStatus(obj.status, obj.statusname);
+        let type = new ReimbursementType(obj.type, obj.typename);
+        
         return new Reimbursement(
             obj.reimbursementid,
-            obj.author,
+            authorUser,
             obj.amount,
             obj.datesubmitted,
             obj.dateresolved,
             obj.description,
-            obj.resolver,
-            obj.status,
-            obj.type
+            resolverUser,
+            status,
+            type
         );
     }
 
     private static async getById(id: number): Promise<Reimbursement> {
-        let res = await Database.Query('select * from reimbursement where reimbursementid = $1', [id]);
+        let res = await Database.Query(
+            this.getQuery('where r.reimbursementid = $1'), [ id ]
+        );
         if(!res) return undefined;
         return this.fromLiteral(res.rows[0]);
     }
 
     public static async getByStatus(id: number): Promise<Reimbursement[]> {
-        let res = await Database.Query('select * from reimbursement where status = $1 order by datesubmitted;', [ id ]);
+        let res = await Database.Query(
+            this.getQuery('where r.status = $1'), [ id ]
+        );
         if(!res) return undefined;
         return res.rows.map(this.fromLiteral);
     }
 
     public static async getByUser(id: number): Promise<Reimbursement[]> {
-        let res = await Database.Query('select * from reimbursement where author = $1;', [id]);
+        let res = await Database.Query(
+            this.getQuery('where r.author = $1'), [id]
+        );
         if (!res) return undefined;
         return res.rows.map(this.fromLiteral);
     }
@@ -46,13 +106,17 @@ export class RemDao {
 
     public static async update(req): Promise<Reimbursement> {
         let e = req.body;
-        await Database.Query(
-            'update reimbursement set author = $1, amount = $2, ' + 
-            'datesubmitted = $3, dateresolved = $4, description = $5, '+ 
-            'resolver = $6, status = $7, type = $8 where reimbursementid = $9;',
-            [e.author, e.amount, e.datesubmitted, e.dateresolved, e.description, 
-            e.resolver, e.status, e.type, e.reimbursementid ]);
+        console.log(req.body);
 
-        return await this.getById(req.body.reimbursementid);
+        let res = await Database.Query(
+            'update reimbursement set author = $1, amount = $2, ' +
+            'datesubmitted = $3, dateresolved = $4, description = $5, ' +
+            'resolver = $6, status = $7, type = $8 where reimbursementid = $9 returning reimbursementid;', [ 
+                e.author, e.amount, e.datesubmitted, e.dateresolved, e.description,
+                e.resolver, e.status, e.type, e.reimbursementid 
+            ]
+        );
+        if(!res) return undefined;
+        return await this.getById(res.rows[0].reimbursementid);
     }
 }

@@ -7,21 +7,21 @@ import { ReimbursementType } from "./reimbursement-type";
 //  an employee would submit
 export class Reimbursement {
     reimbursementId: number;
-    author: number;
+    author: User;
     amount: number;
-    dateSubmitted: number;
-    dateResolved: number;
+    dateSubmitted: string;
+    dateResolved: string;
     description: string;
-    resolver: number;
-    status: number;
-    type: number;
+    resolver: User;
+    status: ReimbursementStatus;
+    type: ReimbursementType;
    
-    constructor(id: number, author: number, amount: number, dateSubmitted: number, dateResolved: number, description: string, resolver: number, status: number, type: number) {
+    constructor(id: number, author: User, amount: number, dateSubmitted: number, dateResolved: number, description: string, resolver: User, status: ReimbursementStatus, type: ReimbursementType) {
         this.reimbursementId = id;
         this.author = author;
         this.amount = amount;
-        this.dateSubmitted = dateSubmitted;
-        this.dateResolved = dateResolved;
+        this.dateSubmitted = Reimbursement.getDate(dateSubmitted);
+        this.dateResolved = Reimbursement.getDate(dateResolved);
         this.description = description;
         this.resolver = resolver;
         this.status = status;
@@ -29,19 +29,10 @@ export class Reimbursement {
     }
 
     private static getDate(value: number) {
+        if(value === 0)
+            return 'Not Resolved!';
         let t = new Date(1970, 1, 1);
         t.setSeconds(value);
         return t.toISOString();
-    }
-
-    public getDateSubmitted(): string {
-        return Reimbursement.getDate(this.dateSubmitted);
-    }
-
-    public getDateResolved(): string {
-        if(this.dateResolved === 0) {
-            return 'pending';
-        }
-        return Reimbursement.getDate(this.dateResolved);
     }
 }

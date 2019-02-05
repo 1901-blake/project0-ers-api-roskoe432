@@ -50,6 +50,7 @@ reimburseRouter.post('/', async (req, res) => {
 reimburseRouter.patch('/', 
 [authMiddleware('finance manager'), async (req, res) => {
     let rem = await RemDao.update(req);
+    console.log(rem);
     if (rem) {
         res.status(201).json(rem);
     } else {

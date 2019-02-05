@@ -35,6 +35,7 @@ export class UserDao {
 
     public static async update(req): Promise<User> {
         let { userid, username, email, password, firstname, lastname, role } = req.body;
+
         const update: IQueryable = {
             isResult: false,
             query: 'update "user" set ' +
@@ -56,8 +57,8 @@ export class UserDao {
                 'where u.userid = $1;',
             params: [userid]
         };
-
         let res = await Database.Transaction(update, select);
+        if(!res) return undefined;
         return this.fromLiteral(res.rows[0]);
     }
 
