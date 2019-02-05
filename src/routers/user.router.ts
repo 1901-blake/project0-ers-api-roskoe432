@@ -9,7 +9,7 @@ export const userRouter = express.Router();
 
 
 userRouter.get('/', 
-[authMiddleware('finance manager'), 
+[authMiddleware('admin', 'finance manager'), 
 async (req, res) => {
     let users = await UserDao.getAll();
     if(users) {
@@ -22,7 +22,7 @@ async (req, res) => {
 
 
 userRouter.get('/:id', 
-[authMiddleware('finance manager', 'associate'), 
+[authMiddleware('all'), 
 edgeCaseMiddleware('id'),
 async (req, res) => {
     let user = await UserDao.getById(req.params.id);
@@ -48,11 +48,13 @@ async (req, res) => {
 
 
 
-userRouter.post('/', [authMiddleware('admin'), async (req, res) => {
-    let user = await UserDao.create(req);
-    if (user) {
-        res.status(201).json(user);
-    } else {
-        res.status(401).send('Could not submit reimbursement.');
-    }
-}]);
+// userRouter.post('/sign-up', 
+// [authMiddleware('admin'), 
+// async (req, res) => {
+//     let user = await UserDao.create(req);
+//     if (user) {
+//         res.status(201).json(user);
+//     } else {
+//         res.status(401).send('Could not submit reimbursement.');
+//     }
+// }]);

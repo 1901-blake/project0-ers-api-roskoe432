@@ -6,7 +6,7 @@ function login(e) {
 
     const credentials = { username, password };
 
-    fetch('http://localhost:<port#>/auth/login', {
+    fetch('http://localhost:<3000>/auth/login', {
         method: 'POST',
         headers: {
             'Accept': 'application/json',

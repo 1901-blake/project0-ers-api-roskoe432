@@ -13,7 +13,7 @@ export class Database {
     };
     private static pool: Pool;
 
-    private static async Connect(): Promise<PoolClient> {
+    public static async Connect(): Promise<PoolClient> {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
         }
