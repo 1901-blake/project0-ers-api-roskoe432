@@ -2,6 +2,12 @@ import { Pool, PoolClient, Query } from 'pg';
 import { QueryResult } from 'pg';
 import pg from 'pg';
 
+export interface IQueryable {
+    isResult: boolean;
+    query: string;
+    params?: any[]
+}
+
 export class Database {
     private static cred = {
         database: process.env.PG_DB,
@@ -13,7 +19,7 @@ export class Database {
     };
     private static pool: Pool;
 
-    public static async Connect(): Promise<PoolClient> {
+    private static async Connect(): Promise<PoolClient> {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
         }
@@ -34,6 +40,31 @@ export class Database {
         }
         finally { 
             client.release(); 
+        }
+    }
+
+    public static async Transaction(...queries: IQueryable[]): Promise<QueryResult> {
+        const client = await this.Connect();
+        try {
+            let res: QueryResult;
+            await client.query('begin;');
+            for(let i = 0; i < queries.length; i++) {
+                let q = queries[i];
+                if(q.isResult) {
+                    res = await client.query(q.query, q.params);
+                    continue;
+                }
+                await client.query(q.query, q.params);
+            }
+            await client.query('commit;');
+            return res;
+        }
+        catch {
+            await client.query('rollback;');
+            return undefined;
+        }
+        finally {
+            client.release();
         }
     }
 }

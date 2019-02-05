@@ -22,7 +22,7 @@ async (req, res) => {
 
 
 userRouter.get('/:id', 
-[authMiddleware('all'), 
+[//authMiddleware('all'), 
 edgeCaseMiddleware('id'),
 async (req, res) => {
     let user = await UserDao.getById(req.params.id);

@@ -1,7 +1,7 @@
 import { User } from '../models/user';
-import { RoleDao } from './role.dao';
-import { Database } from './database';
+import { Database, IQueryable } from './database';
 import { Role } from '../models/role';
+
 
 export class UserDao {
     private static fromLiteral(obj) {
@@ -35,11 +35,9 @@ export class UserDao {
 
     public static async update(req): Promise<User> {
         let { userid, username, email, password, firstname, lastname, role } = req.body;
-        let client = await Database.Connect();
-        try {
-            await client.query('begin;');
-            await client.query(
-                'update "user" set ' +
+        const update: IQueryable = {
+            isResult: false,
+            query: 'update "user" set ' +
                 'username = $1, ' +
                 '"password" = $2, ' +
                 'firstname = $3, ' +
@@ -47,30 +45,20 @@ export class UserDao {
                 'email = $5, ' +
                 '"role" = $6 ' +
                 'where userid = $7; ',
-                [username, password, firstname, lastname, email, role, userid]
-            );
-
-            let res = await client.query(
-                'select u.*, r."role" as "rolename" ' +
+            params: [username, password, firstname, lastname, email, role, userid]
+        };
+        const select: IQueryable = {
+            isResult: true,
+            query: 'select u.*, r."role" as "rolename" ' +
                 'from "user" as u ' +
                 'inner join "role" as r ' +
                 'on u."role" = r.roleid ' +
                 'where u.userid = $1;',
-                [userid]
-            );
+            params: [userid]
+        };
 
-            await client.query('commit;');
-            let u = this.fromLiteral(res.rows[0]);
-            console.log(u);
-            return u;
-        }
-        catch {
-            client.query('rollback;')
-            return undefined;
-        }
-        finally {
-            client.release();
-        }
+        let res = await Database.Transaction(update, select);
+        return this.fromLiteral(res.rows[0]);
     }
 
     public static async getByLogin(req): Promise<User> {
