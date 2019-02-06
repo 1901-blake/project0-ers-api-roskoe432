@@ -28,6 +28,8 @@ function login(e) {
             errormsg.style.opacity = '100';
         } else if (res.status === 200) {
             window.location = 'home.html';
+            let obj = JSON.parse(res.json());
+            console.log(obj);
         }
     }).catch(err => {
         console.log(err);

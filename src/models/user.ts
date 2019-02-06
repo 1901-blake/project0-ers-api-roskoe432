@@ -11,7 +11,7 @@ export class User {
     firstName: string;
     lastName: string;
     email: string;
-    role: Role;
+    role: number;
 
     constructor(id: number = 0, username: string = '', email: string = '', password: string = '', firstName: string = '', lastName: string = '', role: Role = undefined) {
         this.userId = id;
