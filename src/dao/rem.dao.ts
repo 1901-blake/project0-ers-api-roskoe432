@@ -1,9 +1,9 @@
-import { Reimbursement } from '../models/reimbursement';
-import { Role } from '../models/role';
+import { Reimbursement } from '../models/rem';
+import { ReimbursementStatus } from '../models/rem-status';
+import { ReimbursementType } from '../models/rem-type';
 import { User } from '../models/user';
-import { ReimbursementStatus } from '../models/reimbursement-status';
-import { ReimbursementType } from '../models/reimbursement-type';
-import { Database, IQueryable } from './database';
+import { Role } from '../models/role';
+import { Database } from './database';
 
 export class RemDao {
     private static getQuery(cond?: string): string {

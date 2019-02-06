@@ -1,6 +1,6 @@
 import express from 'express';
 import { UserDao } from '../dao/user.dao';
-import { authMiddleware, edgeCaseMiddleware } from '../middleware/auth.middleware';
+import { authMiddleware, edgeCaseMiddleware } from './middleware/auth.middleware';
 
 
 
