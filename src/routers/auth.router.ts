@@ -21,7 +21,7 @@ authRouter.post('/login', async (req, res) => {
         res.status(200).json(u);
     }
     else {
-        res.status(400).json({
+        res.status(401).json({
             message: "Invalid Credentials"
         });
     }

@@ -43,3 +43,10 @@ footer {
     margin: 0;
     padding: 10px;
 }
+
+#error {
+    color: red;
+    text-align: center;
+    font-size: 1em;
+    opacity: 0;
+}

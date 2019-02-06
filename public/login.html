@@ -9,23 +9,23 @@
         <meta name="description" content="Expense remimbursement system for Frost Tech">
         <meta name="keywords" content="ERS, Expense, Reimbursement, System">
         <meta name="author" content="Benjamin R. Snow">
-        <title>Frost Tech: ERS</title>
-
-        <link rel="stylesheet" href="login.css">
+        <title>Redneck Reimbursements</title>
+        <link rel="stylesheet" type="text/css" href="login.css">
     </head>
 
     <body>
         <div id="wrapper">
             <header>
-                <h1>Frost Tech ERS</h1>
+                <h1>Redneck Reimbursements</h1>
             </header>
 
             <nav></nav>
 
             <main>
-                <form id="login" class="login-form" onsubmit="login(event)">
-                    <input type="text" id="login-username" name="username" placeholder="username" required autofocus>
-                    <input type="text" id="login-password" name="password" placeholder="password" required>
+                <form id="login" class="login-form" onsubmit="login(event);">
+                    <input type="text" id="login-username" name="username" placeholder="username" required autofocus/>
+                    <input type="password" id="login-password" name="password" placeholder="password" required/>
+                    <p id="error">Failed to login!</p>
                     <button type="submit">Login</button>
                 </form>
             </main>
@@ -33,7 +33,7 @@
             <footer> &copy; 2019. All rights reserved. Frost Technologies.</footer>
         </div>
 
-        <script src="login.js"></script>
+        <script type="text/javascript" src="login.js"></script>
     </body>
 
 </html>

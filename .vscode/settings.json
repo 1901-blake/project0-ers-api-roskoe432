@@ -4,8 +4,8 @@
         "**/.gitignore": true,
         "**/*.json": true,
         "node_modules": true,
-        "public": true,
         "README.md": true
     },
-    "liveServer.settings.CustomBrowser": "chrome"
+    "liveServer.settings.CustomBrowser": "chrome",
+    "liveServer.settings.file": "/public/login.html"
 }

@@ -1,6 +1,5 @@
 import { Pool, PoolClient } from 'pg';
 import { QueryResult } from 'pg';
-import pg from 'pg';
 
 export interface IQueryable {
     isResult: boolean;
@@ -24,6 +23,8 @@ export class Database {
     };
     private static pool: Pool;
 
+
+
     /**
      * Connects to the database.
      * @returns Promise<Client> 
@@ -34,6 +35,8 @@ export class Database {
         }
         return this.pool.connect();
     }
+
+
 
     /**
      * Use to perform queries, but closes
@@ -58,6 +61,8 @@ export class Database {
             client.release(); 
         }
     }
+
+    
 
     /**
      * User to perform transactions. Very similar

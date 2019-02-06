@@ -18,15 +18,14 @@ app.use(bodyParser.json());
 // Session middleware
 app.use(session(sess));
 
-// Ignore this - for UI implementation
-// app.use( async (req, res, next) => {
-//     res.header('Access-Control-Allow-Credentials', 'true');
-//     res.header('Access-Control-Allow-Origin', 'http://localhost:5500/');
-//     //res.header('Access-Control-Allow-Origin', String(req.headers.origin));
-//     res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, DELETE');
-//     res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
-//     next();
-// });
+app.use( async (req, res, next) => {
+    res.header('Access-Control-Allow-Credentials', 'true');
+    res.header('Access-Control-Allow-Origin', 'http://localhost:5500');
+    //res.header('Access-Control-Allow-Origin', String(req.headers.origin));
+    res.header('Access-Control-Allow-Methods', 'GET, PUT, POST, PATCH, DELETE');
+    res.header('Access-Control-Allow-Headers', 'X-Requested-With, X-HTTP-Method-Override, Content-Type, Accept');
+    next();
+});
 
 app.use('/auth', authRouter);
 app.use('/users', userRouter);
