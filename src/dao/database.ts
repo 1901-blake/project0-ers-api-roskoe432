@@ -1,4 +1,4 @@
-import { Pool, PoolClient, Query } from 'pg';
+import { Pool, PoolClient } from 'pg';
 import { QueryResult } from 'pg';
 import pg from 'pg';
 
