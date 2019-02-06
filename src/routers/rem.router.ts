@@ -9,7 +9,7 @@ export const reimburseRouter = express.Router();
 
 // Request to access reimbursements by status id.
 reimburseRouter.get('/status/:status', 
-[authMiddleware('finance manager'), 
+[authMiddleware('admin', 'finance manager'), 
 async (req, res) => {
     let rems = await RemDao.getByStatus(req.params.status);
     if (rems) {
@@ -22,7 +22,7 @@ async (req, res) => {
 
 // Request to access reimbursements by user id.
 reimburseRouter.get('/user/:user', 
-[authMiddleware('finance manager', 'associate'), 
+[authMiddleware('all'), 
 edgeCaseMiddleware('user'),
 async (req, res) => {
     let rems = await RemDao.getByUser(req.params.user);
@@ -53,7 +53,6 @@ reimburseRouter.post('/', [authMiddleware('all'), async (req, res) => {
 reimburseRouter.patch('/', 
 [authMiddleware('finance manager'), async (req, res) => {
     let rem = await RemDao.update(req);
-    console.log(rem);
     if (rem) {
         res.status(201).json(rem);
     } else {

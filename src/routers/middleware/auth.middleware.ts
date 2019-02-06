@@ -19,20 +19,20 @@ export function authMiddleware(...roles: string[]) {
             res.sendStatus(401);
             return;
         }
-
         if (roles && roles[0] === 'all') {
             next();
             return;
         }
-
+        
         const hasPermission = roles.some(role => {
             return ( user.role === role );
         });
         
         if (hasPermission) {
             next();
+            return;
         } else {
-            res.sendStatus(403);
+            res.status(403).send("User does not have permissions!");
         }
     }
 }
@@ -52,7 +52,7 @@ export function edgeCaseMiddleware(param) {
                 next();
                 return;
             } else {
-                res.sendStatus(403);
+                res.status(403).send('Associate can not access other associates\' profile.');
             }
         }   
         next();
