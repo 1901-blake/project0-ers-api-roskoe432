@@ -1,8 +1,9 @@
-// The User model keeps track of 
-// users information.
-
 import { Role } from './role';
 
+/**
+ * The User model keeps track of
+ * users' information.
+ */
 export class User {
     userId: number;
     username: string;

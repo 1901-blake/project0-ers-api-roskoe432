@@ -1,5 +1,10 @@
-// The Role model is used to track
-//  what permissions a user has.
+
+/**
+ * The Role model is used to track
+ * what permissions a user has. Can
+ * be `Admin`, `Finance Manager`, or 
+ * `Associate`
+ */
 export class Role {    
     roleId: number; // primary key
     role: string; // not null, unique

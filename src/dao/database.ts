@@ -8,6 +8,11 @@ export interface IQueryable {
     params?: any[]
 }
 
+/**
+ * Utility class used to open up connection
+ * to database through the connection pool and
+ * query the data in the database.
+ */
 export class Database {
     private static cred = {
         database: process.env.PG_DB,
@@ -19,6 +24,10 @@ export class Database {
     };
     private static pool: Pool;
 
+    /**
+     * Connects to the database.
+     * @returns Promise<Client> 
+     */
     private static async Connect(): Promise<PoolClient> {
         if(!this.pool) {
             this.pool = new Pool(this.cred);
@@ -26,6 +35,13 @@ export class Database {
         return this.pool.connect();
     }
 
+    /**
+     * Use to perform queries, but closes
+     * the connection immediately after success
+     * or fail.
+     * @param text query string
+     * @param params values to be passed into query string
+     */
     public static async Query(text: string, params?: any[]): Promise<QueryResult> {
         const client = await this.Connect();
         try { 
@@ -43,6 +59,15 @@ export class Database {
         }
     }
 
+    /**
+     * User to perform transactions. Very similar
+     * to `Query` function but allows multiple
+     * queries to be ran in succession. If query
+     * fails a final query is used to rollback and
+     * discard all changes.
+     * @param queries Objects used to define the queries to be ran.
+     * @returns a promised query result
+     */
     public static async Transaction(...queries: IQueryable[]): Promise<QueryResult> {
         const client = await this.Connect();
         try {

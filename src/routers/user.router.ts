@@ -7,7 +7,7 @@ import { authMiddleware, edgeCaseMiddleware } from './middleware/auth.middleware
 export const userRouter = express.Router();
 
 
-
+// Get request to get all users.
 userRouter.get('/', 
 [authMiddleware('admin', 'finance manager'), 
 async (req, res) => {
@@ -20,9 +20,9 @@ async (req, res) => {
 }]);
 
 
-
+// Get request to get a user by id.
 userRouter.get('/:id', 
-[//authMiddleware('all'), 
+[authMiddleware('all'), 
 edgeCaseMiddleware('id'),
 async (req, res) => {
     let user = await UserDao.getById(req.params.id);
@@ -34,10 +34,8 @@ async (req, res) => {
 }]);
 
 
-
-userRouter.patch('/', 
-[authMiddleware('admin'), 
-async (req, res) => {
+// Patch request to update user.
+userRouter.patch('/', [authMiddleware('admin'), async (req, res) => {
     let user = await UserDao.update(req);
     if(user) {
         res.status(201).json(user);
@@ -45,16 +43,3 @@ async (req, res) => {
         res.status(401).send('User not updated!');
     }
 }]);
-
-
-
-// userRouter.post('/sign-up', 
-// [authMiddleware('admin'), 
-// async (req, res) => {
-//     let user = await UserDao.create(req);
-//     if (user) {
-//         res.status(201).json(user);
-//     } else {
-//         res.status(401).send('Could not submit reimbursement.');
-//     }
-// }]);

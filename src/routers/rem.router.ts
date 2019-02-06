@@ -7,7 +7,7 @@ import { authMiddleware, edgeCaseMiddleware } from './middleware/auth.middleware
 export const reimburseRouter = express.Router();
 
 
-
+// Request to access reimbursements by status id.
 reimburseRouter.get('/status/:status', 
 [authMiddleware('finance manager'), 
 async (req, res) => {
@@ -20,7 +20,7 @@ async (req, res) => {
 }]);
 
 
-
+// Request to access reimbursements by user id.
 reimburseRouter.get('/user/:user', 
 [authMiddleware('finance manager', 'associate'), 
 edgeCaseMiddleware('user'),
@@ -36,17 +36,20 @@ async (req, res) => {
 
 
 // No permissions needed
-reimburseRouter.post('/', async (req, res) => {
+// Request to submit/create a reimbursement.
+reimburseRouter.post('/', [authMiddleware('all'), async (req, res) => {
     let rem = await RemDao.create(req);
     if (rem) {
         res.status(201).json(rem);
     } else {
         res.status(401).send('Could not submit reimbursement.');
     }
-});
+}]);
 
 
-
+// Request to update a reimbursement
+// In case of finance manager to approve or deny
+// pending reimbursements.
 reimburseRouter.patch('/', 
 [authMiddleware('finance manager'), async (req, res) => {
     let rem = await RemDao.update(req);

@@ -1,10 +1,12 @@
 import { User } from "./user";
-import { ReimbursementStatus } from "./reimbursement-status";
-import { ReimbursementType } from "./reimbursement-type";
+import { ReimbursementStatus } from "./rem-status";
+import { ReimbursementType } from "./rem-type";
 
-// The Reimbursement model is used to 
-//  represent a single reimbursement that
-//  an employee would submit
+/**
+ * The Reimbursement model is used to
+ * represent a single reimbursement that
+ * an employee would submit
+ */
 export class Reimbursement {
     reimbursementId: number;
     author: User;

@@ -6,7 +6,7 @@ import { UserDao } from '../dao/user.dao';
 export const authRouter = express.Router();
 
 
-
+// Request to login to api.
 authRouter.post('/login', async (req, res) => {
     let user = await UserDao.getByLogin(req);
     console.log('Accessed');
@@ -29,7 +29,7 @@ authRouter.post('/login', async (req, res) => {
 });
 
 
-
+// Request to logout the session user.
 authRouter.post('/logout', async (req, res) => {
     if(req.session.user) {
         let temp = req.session.user;

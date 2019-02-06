@@ -6,6 +6,12 @@ import { Role } from '../models/role';
 import { Database } from './database';
 
 export class RemDao {
+    /**
+     * Helper function to plug select query
+     * string into various dao methods.
+     * @param [cond] optional condition to attach to select query
+     * @returns query string
+     */
     private static getQuery(cond?: string): string {
         return 'select r.*, ' +
             'u.username as "a_username", ' +
@@ -35,6 +41,12 @@ export class RemDao {
             'join reimbursementtype as t ' +
             'on t.typeid = r."type"' + (!cond ? '' : ' ' + cond) + ';';
     }
+
+    /**
+     * Helper function to help create
+     * Reimbursement instance from data.
+     * @param obj result set
+     */
     private static fromLiteral(obj): Reimbursement {
         let authorUser = new User(
             obj.author, 
@@ -70,6 +82,11 @@ export class RemDao {
         );
     }
 
+    /**
+     * Query to help locate reimbursements by id
+     * @param id 
+     * @returns Promise<Reimbursement>
+     */
     private static async getById(id: number): Promise<Reimbursement> {
         let res = await Database.Query(
             this.getQuery('where r.reimbursementid = $1'), [ id ]
@@ -78,6 +95,11 @@ export class RemDao {
         return this.fromLiteral(res.rows[0]);
     }
 
+    /**
+     * Retrieves reimbursements by status id
+     * @param id 
+     * @returns Promise<Reimbursement[]>
+     */
     public static async getByStatus(id: number): Promise<Reimbursement[]> {
         let res = await Database.Query(
             this.getQuery('where r.status = $1'), [ id ]
@@ -86,6 +108,11 @@ export class RemDao {
         return res.rows.map(this.fromLiteral);
     }
 
+    /**
+     * Retrieves reimbursements by User id
+     * @param id 
+     * @returns Promise<Reimbursement[]>
+     */
     public static async getByUser(id: number): Promise<Reimbursement[]> {
         let res = await Database.Query(
             this.getQuery('where r.author = $1'), [id]
@@ -94,6 +121,11 @@ export class RemDao {
         return res.rows.map(this.fromLiteral);
     }
 
+    /**
+     * Creates a new reimbursement
+     * @param req request body
+     * @returns Promise<Reimbursement>
+     */
     public static async create(req): Promise<Reimbursement> {
         let e = req.body;
         let res = await Database.Query(
@@ -104,6 +136,11 @@ export class RemDao {
         return await this.getById(res.rows[0].reimbursementid);
     }
 
+    /**
+     * Updates a submitted reimbursement
+     * @param req request body
+     * @returns Promise<Reimbursement>
+     */
     public static async update(req): Promise<Reimbursement> {
         let e = req.body;
         console.log(req.body);

@@ -4,11 +4,19 @@ import { Role } from '../models/role';
 
 
 export class UserDao {
+    /**
+     * Helper function to construct User instance
+     * from database queries.
+     * @param obj 
+     */
     private static fromLiteral(obj) {
         let role = new Role(obj.role, obj.rolename);
         return new User(obj.userid, obj.username, obj.email, obj.password, obj.firstname, obj.lastname, role);
     }
 
+    /**
+     * Queries all users from database.
+     */
     public static async getAll(): Promise<User[]> {
         let res = await Database.Query(
             'select u.*, r."role" as "rolename"'+
@@ -20,6 +28,10 @@ export class UserDao {
         return res.rows.map(this.fromLiteral);
     }
 
+    /**
+     * Queries one user by id.
+     * @param id 
+     */
     public static async getById(id: number): Promise<User> {
         let res = await Database.Query(
             'select u.*, r."role" as "rolename"' +
@@ -33,9 +45,16 @@ export class UserDao {
         return this.fromLiteral(res.rows[0]);
     }
 
+    /**
+     * Updates a user by id and input provided in request
+     * body.
+     * @param req 
+     * @returns Promise<User> 
+     */
     public static async update(req): Promise<User> {
         let { userid, username, email, password, firstname, lastname, role } = req.body;
 
+        // Set up first query to update user.
         const update: IQueryable = {
             isResult: false,
             query: 'update "user" set ' +
@@ -48,6 +67,8 @@ export class UserDao {
                 'where userid = $7; ',
             params: [username, password, firstname, lastname, email, role, userid]
         };
+
+        // Set up second query to return user that was updated.
         const select: IQueryable = {
             isResult: true,
             query: 'select u.*, r."role" as "rolename" ' +
@@ -57,12 +78,19 @@ export class UserDao {
                 'where u.userid = $1;',
             params: [userid]
         };
+
+        // Runs both queries in a transaction.
         let res = await Database.Transaction(update, select);
         if(!res) return undefined;
         return this.fromLiteral(res.rows[0]);
     }
 
-    
+    /**
+     * Verifies login credentials if someone
+     * tries to login to api.
+     * @param req 
+     * @returns by login 
+     */
     public static async getByLogin(req): Promise<User> {
         let { username, password } = req.body;
         let res = await Database.Query(
@@ -76,15 +104,4 @@ export class UserDao {
         if(!res) return undefined;
         return this.fromLiteral(res.rows[0]);
     }
-
-    // public static async create(req) {
-    //     let e = req.body;
-    //     let res = await Database.Query(
-    //         'insert into "user" (username, "password", firstname, lastname, email, "role") ' +
-    //         'values ($1, $2, $3, $4, $5, $6) returning *;',
-    //         [e.username, e.password, e.firstname, e.lastname, e.email, e.role]);
-
-    //     if(!res) return undefined;
-    //     return this.fromLiteral(res.rows[0]);
-    // }
 }

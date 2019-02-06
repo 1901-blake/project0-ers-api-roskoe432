@@ -6,6 +6,12 @@ const app = express();
 // to grant and revoke privilages to certain
 // users
 
+/**
+ * Middleware that verifies a user permission to
+ * access api. If roles is set to `all`, then all
+ * roles have permission to that request.
+ * @param roles names of allowed roles.
+ */
 export function authMiddleware(...roles: string[]) {
     return (req, res, next) => {
         const user = req.session.user;
@@ -31,6 +37,13 @@ export function authMiddleware(...roles: string[]) {
     }
 }
 
+/**
+ * Middleware used verify a user's id so they
+ * can view their information and reimbursements,
+ * but only theirs. If admin or finance manager 
+ * the check bypasses them and proceeds to request.
+ * @param param name of request parameters value.
+ */
 export function edgeCaseMiddleware(param) {
     return function(req, res, next) {
         let { role, id } = req.session.user;
