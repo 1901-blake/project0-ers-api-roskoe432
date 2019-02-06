@@ -38,9 +38,9 @@ export function authMiddleware(...roles: string[]) {
 }
 
 /**
- * Middleware used verify a user's id so they
+ * Middleware used to verify a user's id so they
  * can view their information and reimbursements,
- * but only theirs. If admin or finance manager 
+ * but only theirs. If user is admin or finance manager 
  * the check bypasses them and proceeds to request.
  * @param param name of request parameters value.
  */
