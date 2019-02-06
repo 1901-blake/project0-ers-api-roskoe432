@@ -143,7 +143,6 @@ export class RemDao {
      */
     public static async update(req): Promise<Reimbursement> {
         let e = req.body;
-        console.log(req.body);
 
         let res = await Database.Query(
             'update reimbursement set author = $1, amount = $2, ' +
