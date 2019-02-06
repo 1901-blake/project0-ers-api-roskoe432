@@ -18,7 +18,7 @@ authRouter.post('/login', async (req, res) => {
             role: user.role.role
         };
         req.session.user = u;
-        res.status(200).json({msg: "Login Successful", ...u});
+        res.status(200).json(u);
     }
     else {
         res.status(400).json({
@@ -33,7 +33,7 @@ authRouter.post('/logout', async (req, res) => {
     if(req.session.user) {
         let temp = req.session.user;
         req.session.user = null;
-        res.status(201).json({ msg: "User has logged out!", ...temp});
+        res.status(201).json(temp);
     } else {
         res.sendStatus(400);
     }
