@@ -17,12 +17,25 @@ main {
 
 form {
     margin: 0 auto;
+    padding: 20px;
     width: 200px;
     border: 2px solid black;
 }
 
-form input, form label {
+label {
+    text-align: center;
+}
+
+form input, form label, button {
     margin: 0 auto;
+    display: block;
+}
+
+form input {
+    width: 100%;
+    height: 50px;
+    appearance: none;
+    font-size: 1em;
 }
 
 footer {

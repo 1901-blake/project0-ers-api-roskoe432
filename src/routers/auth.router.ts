@@ -9,6 +9,7 @@ export const authRouter = express.Router();
 
 authRouter.post('/login', async (req, res) => {
     let user = await UserDao.getByLogin(req);
+    console.log('Accessed');
     if(user) {
         let u = {
             id: user.userId,
