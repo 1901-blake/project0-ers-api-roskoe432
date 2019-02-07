@@ -2,6 +2,8 @@
     "files.exclude": {
         ".vscode": true,
         "**/.gitignore": true,
+        "**/*.json": true,
+        "node_modules": true,
         "README.md": true
     },
     "liveServer.settings.CustomBrowser": "chrome",

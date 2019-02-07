@@ -5,12 +5,9 @@ function login(e) {
     let username = document.getElementById('login-username');
     let password = document.getElementById('login-password');
 
-    username.addEventListener('focus', (e) => {
-        errormsg.style.opacity = '0';
-    });
-    password.addEventListener('focus', (e) => {
-        errormsg.style.opacity = '0'
-    });
+    let setToZero = e => { errormsg.style.opacity = '0' };
+    username.addEventListener('focus', setToZero);
+    password.addEventListener('focus', setToZero);
 
     const credentials = { username: username.value, password: password.value };
 
@@ -28,8 +25,6 @@ function login(e) {
             errormsg.style.opacity = '100';
         } else if (res.status === 200) {
             window.location = 'home.html';
-            let obj = JSON.parse(res.json());
-            console.log(obj);
         }
     }).catch(err => {
         console.log(err);
