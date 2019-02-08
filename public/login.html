@@ -6,34 +6,33 @@
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
         <meta http-equiv="X-UA-Compatible" content="ie=edge">
-        <meta name="description" content="Expense remimbursement system for Frost Tech">
-        <meta name="keywords" content="ERS, Expense, Reimbursement, System">
-        <meta name="author" content="Benjamin R. Snow">
         <title>Redneck Reimbursements</title>
         <link rel="stylesheet" type="text/css" href="login.css">
     </head>
 
     <body>
         <div id="wrapper">
-            <header>
-                <h1>Redneck Reimbursements</h1>
+            <!-- Header -->
+            <header class="center-text">
+                <!-- <h1>Redneck Reimbursements</h1> -->
             </header>
 
-            <nav></nav>
-
+            <!-- Content -->
             <main>
-                <form id="login" class="login-form" onsubmit="login(event);">
-                    <input type="text" id="login-username" name="username" placeholder="username" required autofocus/>
-                    <input type="password" id="login-password" name="password" placeholder="password" required/>
-                    <p id="error">Failed to login!</p>
-                    <button type="submit">Login</button>
-                </form>
+                <div id="login-bg">
+                    <form id="login" class="login-form center-text" onsubmit="login(event)">
+                        <input type="text" id="login-username" name="username" placeholder="username" required autofocus />
+                        <input type="password" id="login-password" name="password" placeholder="password" required />
+                        <p id="error">Failed to login!</p>
+                        <button type="submit">Login</button>
+                    </form>
+                </div>
             </main>
 
-            <footer> &copy; 2019. All rights reserved. Frost Technologies.</footer>
+            <!-- Footer -->
+            <footer class="center-text"> &copy; 2019. All rights reserved. Redneck ERS.</footer>
         </div>
-
-        <script type="text/javascript" src="login.js"></script>
+        <script src="login.js"></script>
     </body>
 
 </html>
