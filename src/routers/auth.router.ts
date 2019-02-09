@@ -18,7 +18,7 @@ authRouter.post('/login', async (req, res) => {
             role: user.role.role
         };
         req.session.user = u;
-        res.status(200).json({msg: 'user has logged in'});
+        res.status(200).json({ msg: `${u.username} has logged in`});
     }
     else {
         res.status(401).json({
