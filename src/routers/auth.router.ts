@@ -9,7 +9,7 @@ export const authRouter = express.Router();
 // Request to login to api.
 authRouter.post('/login', async (req, res) => {
     let user = await UserDao.getByLogin(req);
-    if(user) {
+    if(user && !req.session.user) {
         let u = {
             id: user.userId,
             username: user.username,
