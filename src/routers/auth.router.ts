@@ -9,7 +9,7 @@ export const authRouter = express.Router();
 // Request to login to api.
 authRouter.post('/login', async (req, res) => {
     let user = await UserDao.getByLogin(req);
-    if(user && !req.session.user) {
+    if(user) {
         let u = {
             id: user.userId,
             username: user.username,
@@ -18,7 +18,7 @@ authRouter.post('/login', async (req, res) => {
             role: user.role.role
         };
         req.session.user = u;
-        res.status(200).json({ msg: `${u.username} has logged in`});
+        res.status(200).json(u);
     }
     else {
         res.status(401).json({
