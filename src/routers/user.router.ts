@@ -13,7 +13,6 @@ userRouter.get('/',
 async (req, res) => {
     let users = await UserDao.getAll();
     if(users) {
-        console.log(req.body);
         res.status(201).json(users);
     } else {
         res.status(401).send('Could not retrieve users.');
