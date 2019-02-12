@@ -11,30 +11,22 @@ export class Reimbursement {
     reimbursementId: number;
     author: User;
     amount: number;
-    dateSubmitted: string;
-    dateResolved: string;
+    dateSubmitted: Date;
+    dateResolved: Date;
     description: string;
     resolver: User;
     status: ReimbursementStatus;
     type: ReimbursementType;
    
-    constructor(id: number, author: User, amount: number, dateSubmitted: number, dateResolved: number, description: string, resolver: User, status: ReimbursementStatus, type: ReimbursementType) {
+    constructor(id: number, author: User, amount: number, dateSubmitted: Date, dateResolved: Date, description: string, resolver: User, status: ReimbursementStatus, type: ReimbursementType) {
         this.reimbursementId = id;
         this.author = author;
         this.amount = amount;
-        this.dateSubmitted = Reimbursement.getDate(dateSubmitted);
-        this.dateResolved = Reimbursement.getDate(dateResolved);
+        this.dateSubmitted = dateSubmitted;
+        this.dateResolved = dateResolved;
         this.description = description;
         this.resolver = resolver;
         this.status = status;
         this.type = type;
-    }
-
-    private static getDate(value: number) {
-        if(value === 0)
-            return 'Not Resolved!';
-        let t = new Date(1970, 1, 1);
-        t.setSeconds(value);
-        return t.toISOString();
     }
 }

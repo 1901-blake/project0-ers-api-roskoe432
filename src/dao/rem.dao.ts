@@ -131,7 +131,7 @@ export class RemDao {
         let res = await Database.Query(
             'insert into reimbursement (author, amount, datesubmitted, dateresolved, description, resolver, status, "type") ' +
             'values ($1, $2, $3, $4, $5, $6, $7, $8) returning reimbursementid;',
-            [ e.author, e.amount, e.datesubmitted, e.dateresolved, e.description, e.resolver, e.status, e.type ]);
+            [ e.author, e.amount, Date.now(), e.dateresolved, e.description, e.resolver, e.status, e.type ]);
 
         return await this.getById(res.rows[0].reimbursementid);
     }
